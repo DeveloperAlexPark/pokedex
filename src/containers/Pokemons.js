@@ -1,9 +1,8 @@
 import React from 'react'
-import PokemonItem from '../components/pokemonItem'
-import PokemonStore from '../stores/PokemonsStore'
+// import PokemonItem from '../components/pokemonItem'
+// import PokemonStore from '../stores/PokemonsStore'
 
 class Pokemons extends React.Component {
-    
     componentDidMount = () => {
         console.log(this.props)
     }
@@ -11,7 +10,7 @@ class Pokemons extends React.Component {
     renderList = (item) => null
 
     render() {
-        return(
+        return (
             <div className='container'>
                 {this.renderList()}
             </div>

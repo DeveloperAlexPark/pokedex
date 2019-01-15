@@ -4,9 +4,8 @@ import Footer from './components/Footer'
 import appConfig from './config/appConfig'
 
 class App extends Component {
-
   componentDidMount = () => {
-    appConfig();
+    appConfig()
   }
 
   render() {
@@ -18,8 +17,8 @@ class App extends Component {
         </div>
         <Footer />
       </Fragment>
-    );
+    )
   }
 }
 
-export default App;
+export default App
