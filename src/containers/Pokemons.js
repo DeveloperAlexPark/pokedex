@@ -1,9 +1,22 @@
 import React from 'react'
+import PokemonItem from '../components/pokemonItem'
+import PokemonStore from '../stores/PokemonsStore'
 
-export default class Pokemons extends React.Component {
+class Pokemons extends React.Component {
+    
+    componentDidMount = () => {
+        console.log(this.props)
+    }
+
+    renderList = (item) => null
+
     render() {
         return(
-            <div>Pokemons</div>
+            <div className='container'>
+                {this.renderList()}
+            </div>
         )
     }
 }
+
+export default Pokemons
