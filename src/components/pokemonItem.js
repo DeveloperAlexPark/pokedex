@@ -40,7 +40,7 @@ class PokemonItem extends React.Component {
     renderStats = () => {
         const { pokemon } = this.state
         return (
-            <Table basic='very'>
+            <Table basic='very' unstackable>
                 <Table.Body>
                     {_.map(pokemon.stats, item => (
                         <Table.Row key={item.stat.name}>
