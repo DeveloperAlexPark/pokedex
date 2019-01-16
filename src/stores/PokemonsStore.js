@@ -65,21 +65,21 @@ class PokemonsStore {
     @action handleTypes = (e, { value }) => {
         this.typesValue = value
         this.page = 1
-        switch (value.length) {
-            case 0:
-                this.filteredPokemons = this.all
-                return
-            case 1:
-                this.filteredPokemons = []
-                break
-            default:
-                break
+        if (value.length === 0) {
+            this.filteredPokemons = this.all
+            return
         }
-        axios.get(`https://pokeapi.co/api/v2/type/${_.last(value)}/`).then(response => {
-            const res = response.data.pokemon
-            if (res.length === 0) return
-            const parsedRes = _.map(res, item => item.pokemon)
-            this.filteredPokemons = _.uniq([..._.cloneDeep(this.filteredPokemons), ...parsedRes])
+        const promises = _.map(value, item => axios.get(`https://pokeapi.co/api/v2/type/${item}/`))
+        Promise.all(promises).then(response => {
+            this.filteredPokemons = _.sortBy(
+                _.uniq(
+                    _.flatten(
+                        _.map(
+                            response, item => _.map(item.data.pokemon, item => item.pokemon)
+                        )
+                    )
+                )
+                , (o) => o.url)
         })
     }
 }
