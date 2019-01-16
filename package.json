@@ -43,6 +43,7 @@
     "mini-css-extract-plugin": "0.4.3",
     "mobx": "^5.8.0",
     "mobx-react": "^5.4.3",
+    "mobx-react-router": "^4.0.5",
     "node-sass": "^4.11.0",
     "normalize.css": "^8.0.1",
     "optimize-css-assets-webpack-plugin": "5.0.1",
@@ -55,6 +56,8 @@
     "react-app-polyfill": "^0.2.0",
     "react-dev-utils": "^7.0.1",
     "react-dom": "^16.7.0",
+    "react-paginate": "^6.2.0",
+    "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "resolve": "1.8.1",
     "sass-loader": "7.1.0",
@@ -68,7 +71,12 @@
   },
   "babel": {
     "plugins": [
-      "@babel/plugin-proposal-decorators"
+      [
+        "@babel/plugin-proposal-decorators",
+        {
+          "legacy": true
+        }
+      ]
     ],
     "presets": [
       "react-app"
@@ -129,9 +137,7 @@
       "node"
     ]
   },
-  "babel": {
-    "presets": [
-      "react-app"
-    ]
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.2.3"
   }
 }

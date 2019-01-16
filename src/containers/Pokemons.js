@@ -1,13 +1,16 @@
 import React from 'react'
-// import PokemonItem from '../components/pokemonItem'
-// import PokemonStore from '../stores/PokemonsStore'
+import { observer, inject } from 'mobx-react'
+import ReactPaginate from 'react-paginate'
+import PokemonItem from '../components/PokemonItem'
 
+@inject('PokemonsStore')
+@observer
 class Pokemons extends React.Component {
-    componentDidMount = () => {
-        console.log(this.props)
-    }
-
-    renderList = (item) => null
+    renderList = () => (
+        this.props.PokemonsStore.pokemonsLimited.map((item, index) => (
+            <PokemonItem data={item} key={index} />
+        ))
+    )
 
     render() {
         return (

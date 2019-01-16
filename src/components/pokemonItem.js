@@ -1,7 +1,10 @@
 import React from 'react'
 
-export default class pokemonItem extends React.Component {
+export default class PokemonItem extends React.Component {
     render() {
-        return null
+        const { data } = this.props
+        return (
+            <div>{ data.name }</div>
+        )
     }
 }
