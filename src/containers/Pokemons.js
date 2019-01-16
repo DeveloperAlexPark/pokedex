@@ -22,12 +22,15 @@ class Pokemons extends React.Component {
                 <div className='pokemons'>
                     {this.renderList()}
                 </div>
-                {totalPages > 0 &&
+                {totalPages > 1 &&
                     <Pagination
                         activePage={page}
                         onPageChange={(e, { activePage }) => changePage(activePage)}
                         size='mini'
+                        firstItem={null}
+                        lastItem={null}
                         totalPages={totalPages}
+                        boundaryRange={0}
                     />
                 }
             </div>

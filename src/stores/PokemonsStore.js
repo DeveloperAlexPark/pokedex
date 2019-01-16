@@ -25,8 +25,9 @@ class PokemonsStore {
         this.page = page
     }
 
-    @action changeLimit = (limit) => {
-        this.limit = limit
+    @action changeLimit = (e, { value }) => {
+        this.limit = value
+        this.page = 1
     }
 
     @action handleSearch = (e, { value }) => {
