@@ -1,21 +1,25 @@
-import { observable, action, autorun, toJS } from 'mobx'
+import { observable, action, computed } from 'mobx'
 import pokemonsDB from '../db/pokemons.json'
 import _ from 'lodash'
 
 class PokemonsStore {
-    @observable all = toJS(pokemonsDB.results)
+    @observable filteredPokemons = pokemonsDB.results
     @observable count = pokemonsDB.count
     @observable limit = 20
-    @observable page = 0
-    @observable pokemonsLimited = []
+    @observable page = 1
+    @observable searchValue = ''
 
-    reactToChange = autorun(() => {
+    @computed get totalPages() {
+        return Math.floor(this.count / this.limit)
+    }
+
+    @computed get pokemonsLimited() {
         const limit = this.limit
-        const page = this.page
+        const page = this.page - 1
         const start = page === 0 ? 0 : page * limit
         const end = page === 0 ? limit : page * limit + limit
-        this.pokemonsLimited = _.slice(this.all, start, end)
-    })
+        return _.slice(this.filteredPokemons, start, end)
+    }
 
     @action changePage = (page) => {
         this.page = page
@@ -23,6 +27,21 @@ class PokemonsStore {
 
     @action changeLimit = (limit) => {
         this.limit = limit
+    }
+
+    @action handleSearch = (e, { value }) => {
+        this.searchValue = value
+        if (value.length <= 1) {
+            this.filteredPokemons = pokemonsDB.results
+            this.count = pokemonsDB.count
+        } else {
+            const filtered = _.filter(pokemonsDB.results, item => {
+                return item.name.indexOf(value) !== -1
+            })
+            this.filteredPokemons = filtered
+            this.count = filtered.length
+        }
+        this.page = 1
     }
 }
 
