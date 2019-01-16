@@ -23,7 +23,7 @@ const limits = [
 @observer
 class Header extends React.Component {
     render() {
-        const { searchValue, handleSearch, limit, changeLimit } = this.props.PokemonsStore
+        const { searchValue, handleSearch, limit, changeLimit, types } = this.props.PokemonsStore
         return (
             <div className='header'>
                 <div className='container'>
@@ -37,6 +37,7 @@ class Header extends React.Component {
                                 value={limit}
                                 onChange={changeLimit}
                             />
+                            
                         </div>
                         <div className='search header__search'>
                             <Input

@@ -1,11 +1,13 @@
 import React from 'react'
 import { inject, observer } from 'mobx-react'
+import { Table } from 'semantic-ui-react'
+import _ from 'lodash'
 
 @inject('PokemonStore')
 @observer
 class PokemonItem extends React.Component {
     state = {
-        pokemon: {}
+        pokemon: ''
     }
 
     componentDidMount = () => {
@@ -25,11 +27,54 @@ class PokemonItem extends React.Component {
             })
     }
 
+    renderTypes = () => {
+        const { pokemon } = this.state
+        return _.map(pokemon.types, item => (
+            <div className='types__row' key={item.slot}>
+                <div className={`types__block type-color--${item.type.name}`}></div>
+                <div className='types__text'>{item.type.name}</div>
+            </div>
+        ))
+    }
+
+    renderStats = () => {
+        const { pokemon } = this.state
+        return (
+            <Table basic='very'>
+                <Table.Body>
+                    {_.map(pokemon.stats, item => (
+                        <Table.Row>
+                            <Table.Cell>{item.stat.name}</Table.Cell>
+                            <Table.Cell>{item.base_stat}</Table.Cell>
+                            </Table.Row>
+                    ))}
+                </Table.Body>
+            </Table>
+        )
+    }
+
     render() {
-        const { data } = this.props
+        const { pokemon } = this.state
+        if (!pokemon) return null
         return (
             <div className='pokemon'>
-                <div>{ data.name }</div>
+                <div>
+                    <div className={`pokemon__name type-color--${pokemon.types[0].type.name}`}>{ pokemon.name }</div>
+                    <div className='pokemon__avatar'>
+                        <img src={ pokemon.sprites.front_default } alt='' />
+                    </div>
+                    <div className='pokemon__exp'>
+                        Base experience: {pokemon.base_experience}
+                    </div>
+                    <div className='pokemon__types types'>
+                        <div className='pokemon__title'>Type:</div>
+                        {this.renderTypes()}
+                    </div>
+                </div>
+                <div className='pokemon__stats'>
+                    <div className='pokemon__title'>Stats:</div>
+                    {this.renderStats()}
+                </div>
             </div>
         )
     }

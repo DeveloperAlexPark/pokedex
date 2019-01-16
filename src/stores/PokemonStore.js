@@ -12,7 +12,6 @@ class PokemonStore {
     getPokemonDetail = (url, name) => {
         return new Promise((resolve, reject) => {
             const foundPokemon = this.findPokemon(name)
-            console.log(foundPokemon)
             if (foundPokemon) return resolve(foundPokemon)
             axios.get(url)
                 .then(response => {
