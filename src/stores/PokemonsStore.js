@@ -1,16 +1,17 @@
 import { observable, action, computed } from 'mobx'
-import pokemonsDB from '../db/pokemons.json'
 import _ from 'lodash'
+import axios from 'axios'
 
 class PokemonsStore {
-    @observable filteredPokemons = pokemonsDB.results
-    @observable count = pokemonsDB.count
+    @observable filteredPokemons = []
+    @observable types = []
     @observable limit = 20
     @observable page = 1
     @observable searchValue = ''
+    @observable typesValue = []
 
     @computed get totalPages() {
-        return Math.floor(this.count / this.limit)
+        return Math.ceil(this.count / this.limit)
     }
 
     @computed get pokemonsLimited() {
@@ -21,8 +22,18 @@ class PokemonsStore {
         return _.slice(this.filteredPokemons, start, end)
     }
 
-    @action changePage = (page) => {
-        this.page = page
+    @computed get count() {
+        return this.filteredPokemons.length
+    }
+
+    @action getPokemons = () => {
+        axios.get(`https://pokeapi.co/api/v2/pokemon/`).then(response => {
+            this.all = this.filteredPokemons = response.data.results
+        })
+    }
+
+    @action changePage = (e, { activePage }) => {
+        this.page = activePage
     }
 
     @action changeLimit = (e, { value }) => {
@@ -32,17 +43,48 @@ class PokemonsStore {
 
     @action handleSearch = (e, { value }) => {
         this.searchValue = value
+        this.typesValue = []
         if (value.length <= 1) {
-            this.filteredPokemons = pokemonsDB.results
-            this.count = pokemonsDB.count
+            this.filteredPokemons = this.all
         } else {
-            const filtered = _.filter(pokemonsDB.results, item => {
+            const filtered = _.filter(this.all, item => {
                 return item.name.indexOf(value) !== -1
             })
             this.filteredPokemons = filtered
-            this.count = filtered.length
         }
         this.page = 1
+    }
+
+    @action getTypes = () => {
+        axios.get(`https://pokeapi.co/api/v2/type/`).then(response => {
+            this.types = _.map(response.data.results, item => (
+                {
+                    text: item.name,
+                    value: item.name
+                }
+            ))
+        })
+    }
+
+    @action handleTypes = (e, { value }) => {
+        this.typesValue = value
+        this.page = 1
+        switch (value.length) {
+            case 0:
+                this.filteredPokemons = this.all
+                return
+            case 1:
+                this.filteredPokemons = []
+                break
+            default:
+                break
+        }
+        axios.get(`https://pokeapi.co/api/v2/type/${_.last(value)}/`).then(response => {
+            const res = response.data.pokemon
+            if (res.length === 0) return
+            const parsedRes = _.map(res, item => item.pokemon)
+            this.filteredPokemons = _.uniq([..._.cloneDeep(this.filteredPokemons), ...parsedRes])
+        })
     }
 }
 

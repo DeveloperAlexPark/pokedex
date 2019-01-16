@@ -16,6 +16,7 @@ class PokemonStore {
             axios.get(url)
                 .then(response => {
                     const res = response.data
+                    res.types = _.sortBy(res.types, item => item.slot)
                     this.setPokemonDetail(res)
                     resolve(res)
                 })

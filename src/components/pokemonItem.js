@@ -43,9 +43,9 @@ class PokemonItem extends React.Component {
             <Table basic='very'>
                 <Table.Body>
                     {_.map(pokemon.stats, item => (
-                        <Table.Row>
+                        <Table.Row key={item.stat.name}>
                             <Table.Cell>{item.stat.name}</Table.Cell>
-                            <Table.Cell>{item.base_stat}</Table.Cell>
+                            <Table.Cell textAlign='right'>{item.base_stat}</Table.Cell>
                             </Table.Row>
                     ))}
                 </Table.Body>
