@@ -1,7 +1,7 @@
 import React from 'react'
 import { observer, inject } from 'mobx-react'
 import PokemonItem from '../components/PokemonItem'
-import { Pagination, Input } from 'semantic-ui-react'
+import { Pagination } from 'semantic-ui-react'
 import _ from 'lodash'
 
 @inject('PokemonsStore')
@@ -16,16 +16,9 @@ class Pokemons extends React.Component {
     )
 
     render() {
-        const { searchValue, handleSearch, changePage, page, totalPages } = this.props.PokemonsStore
+        const { changePage, page, totalPages } = this.props.PokemonsStore
         return (
             <div className='container'>
-                <div className='search'>
-                    <Input
-                        placeholder={'Search...'}
-                        onChange={_.debounce(handleSearch, 500, { leading: true })}
-                        value={searchValue}
-                    />
-                </div>
                 <div className='pokemons'>
                     {this.renderList()}
                 </div>
