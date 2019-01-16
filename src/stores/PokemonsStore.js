@@ -11,7 +11,7 @@ class PokemonsStore {
     @observable typesValue = []
 
     @computed get totalPages() {
-        return Math.ceil(this.count / this.limit)
+        return Math.ceil(this.filteredPokemons.length / this.limit)
     }
 
     @computed get pokemonsLimited() {
@@ -20,10 +20,6 @@ class PokemonsStore {
         const start = page === 0 ? 0 : page * limit
         const end = page === 0 ? limit : page * limit + limit
         return _.slice(this.filteredPokemons, start, end)
-    }
-
-    @computed get count() {
-        return this.filteredPokemons.length
     }
 
     @action getPokemons = () => {
